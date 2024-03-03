@@ -1,12 +1,14 @@
-#main
+# main
 from com_environment import Environment
 from com_environment import Room
 from com_agent import VaccumAgent
 
 class TwoRoomVaccumCleanerEnvironment(Environment):
-    ''' classdocs '''
     def __init__(self, agent):
-        ''' Constructor '''
+        ''' 
+        Constructor 
+        Initializes the environment with two rooms, an agent, and default parameters.
+        '''
         self.r1 = Room('A', 'dirty')
         self.r2 = Room('B', 'dirty')
         self.agent = agent
@@ -16,6 +18,7 @@ class TwoRoomVaccumCleanerEnvironment(Environment):
         self.action = ""
 
     def executeStep(self, n=1):
+        #  n: Number of steps to execute (default is 1).
         for _ in range(0, n):
             self.displayPerception()
             self.agent.sense(self)
@@ -31,12 +34,14 @@ class TwoRoomVaccumCleanerEnvironment(Environment):
             self.step += 1
 
     def executeAll(self):
-        raise NotImplementedError('action must be defined!')
+        raise NotImplementedError('executeAll method must be defined!')
 
     def displayPerception(self):
+        #Display the current perception of the environment.
         print("Perception at step %d is [%s, %s]" % (self.step, self.currentRoom.status, self.currentRoom.location))
 
     def displayAction(self):
+        #Display the action taken by the agent at the current step.
         print("------- Action taken at step %d is [%s]" % (self.step, self.action))
 
     def delay(self, n=100):
@@ -47,4 +52,3 @@ if __name__ == '__main__':
     vcagent = VaccumAgent()
     env = TwoRoomVaccumCleanerEnvironment(vcagent)
     env.executeStep(50)
-
