@@ -1,0 +1,60 @@
+def is_safe(board, row, col, n):
+    # Check if there is a queen in the same row
+    
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+
+    # Check upper diagonal on the left side
+    i, j = row, col
+    while i >= 0 and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j -= 1
+
+    # Check lower diagonal on the left side
+    i, j = row, col
+    while i < n and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i += 1
+        j -= 1
+
+    return True
+
+
+def solve_n_queens_util(board, col, n, solutions):
+    
+    if col == n:
+        solutions.append([row[:] for row in board])     #Append a copy of the board to solutions and Modify the original board to[0][0] create a new list with the same structure and values
+        return
+
+    for i in range(n):
+        if is_safe(board, i, col, n):
+            board[i][col] = 1
+            solve_n_queens_util(board, col + 1, n, solutions)
+            board[i][col] = 0  # Backtrack if placing a queen doesn't lead to a solution
+
+def solve_n_queens(n):
+    board = []
+    for _ in range(n):
+        row = [0] * n
+        board.append(row)
+
+    solutions = []
+    
+    solve_n_queens_util(board, 0, n, solutions)
+
+    return solutions
+
+# Example usage:
+n = 8
+solutions = solve_n_queens(n)
+
+print(f"Number of solutions for {n}-queens problem: {len(solutions)}")
+for i, solution in enumerate(solutions, 1):    #enumerate is a built-in function in Python that is used to iterate over a sequence (such as a list, tuple, or string) while keeping track of the index or position of the current item. It returns pairs of index and item during each iteration.
+    print(f"Solution {i}:")
+    for row in solution:
+        print(row)
+    print()
